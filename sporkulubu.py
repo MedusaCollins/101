@@ -15,10 +15,11 @@ from rich import print
 spor_kulubu = {
     "üye" : {"erkek": ["enes","ufuk","ulaş","burak","caner"], "kadın": ["ipek","özden", "nihal"]},
     "branş": {
-        "yüzme": {"yaş": [0, 6], "cinsiyet": ["erkek", "kadın"], "sertifika": False},
-        "hentbol": {"yaş": [0, 8], "cinsiyet": ["erkek", "kadın"], "sertifika": False},
-        "basketbol": {"yaş": [20, 30], "cinsiyet": ["erkek", "kadın"], "sertifika": False},
-        "Futbol": {"yaş": [20, 30], "cinsiyet": ["erkek", "kadın"], "sertifika": True},
+        "yüzme": {"yaş": [0, 6], "cinsiyet": ["erkek", "kadın"], "sertifika": False, "alım": True},
+        "hentbol": {"yaş": [0, 8], "cinsiyet": ["erkek", "kadın"], "sertifika": False, "alım": True},
+        "basketbol": {"yaş": [20, 30], "cinsiyet": ["erkek", "kadın"], "sertifika": False, "alım": True},
+        "cimnastik": {"yaş": [0, 100], "cinsiyet": ["erkek", "kadın"], "sertifika": False, "alım": False},
+        "Futbol": {"yaş": [0, 100], "cinsiyet": ["erkek", "kadın"], "sertifika": True, "alım": True}
     }
 }
 
@@ -39,15 +40,15 @@ for branş, detaylar in spor_kulubu["branş"].items():
     yaş = f"{detaylar['yaş'][0]}-{detaylar['yaş'][1]}"
     cinsiyet = "/".join(detaylar['cinsiyet'])
     sertifika = "Var" if detaylar['sertifika'] else "Yok"
-    branş_rows.append([branş.capitalize(), yaş, cinsiyet.capitalize(), sertifika])
+    branş_rows.append([branş.capitalize(), yaş, cinsiyet.capitalize(), sertifika, "Açık" if detaylar['alım'] else "Kapalı"])
 
 Console().print(tablo_olustur("Kayıt olması gerekenler", ["Cinsiyet", "İsimler"], üye_rows), 
-              tablo_olustur("Branşlar", ["Branş", "Yaş", "Cinsiyet", "Sertifika Zorunluluğu"], branş_rows), 
+              tablo_olustur("Branşlar", ["Branş", "Yaş", "Cinsiyet", "Sertifika Zorunluluğu", "Alımlar"], branş_rows), 
               justify="center")
 
 
 
-isim, yas, brans, sertifika = [item.strip() for item in input("Lütfen sırasıyla isim, yaş, branş ve sertifikanızın olup olmadığını(e/h) aralarına virgül bırakarak yazınız: ").split(',')]
+isim, yas, brans, sertifika = [item.strip().lower() for item in input("Lütfen sırasıyla isim, yaş, branş ve sertifikanızın olup olmadığını(e/h) aralarına virgül bırakarak yazınız: ").split(',')]
 
 if isim not in spor_kulubu["üye"]["erkek"] and isim not in spor_kulubu["üye"]["kadın"]:
     print("[red]İsminiz listede bulunmadığı için kaydınızı gerçekleştiremeyiz.")
@@ -59,7 +60,10 @@ else:
             print(f"[red]{brans} kulübüne yaşınızın ötürü katılamazsınız.")
         else:
             if isim in spor_kulubu["üye"]["erkek"] and "erkek" not in spor_kulubu["branş"][brans]["cinsiyet"] and isim in spor_kulubu["üye"]["kadın"] and "kadın" not in spor_kulubu["branş"][brans]["cinsiyet"]:
-                print(f"[red]{brans} kulübe cinsiyetinizin ötürü katılamazsınız.")
+                print(f"[red]{brans} kulübüne cinsiyetinizin ötürü katılamazsınız.")
             else:
-                if sertifika.upper() == "E" and spor_kulubu["branş"][brans]["sertifika"] == True or spor_kulubu["branş"][brans]["sertifika"] == False:
-                    print(f"[green]{isim.capitalize()}, {brans} kulübüne kaydınız başarıyla gerçekleşmiştir.")
+                if spor_kulubu["branş"][brans]["alım"] == False:
+                    print(f"[red]{brans} kulübüne alım yoktur.")
+                else:
+                    if sertifika == "E" and spor_kulubu["branş"][brans]["sertifika"] == True or spor_kulubu["branş"][brans]["sertifika"] == False:
+                        print(f"[green]{isim}, {brans} kulübüne kaydınız başarıyla gerçekleşmiştir.")
