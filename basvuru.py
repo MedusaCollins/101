@@ -2,25 +2,15 @@
 # Bazı kriterler verilmesi gerekiyor. Bu anlamda bir başvuru formu oluşturun, oluşturacağınız başvuru formunda, sorular akıl oyunu barındırsın. Doğru cevabı vermeden,
 # Diğer soruya geçemeyen başvuranlar 3 kere üst üste hata yaparlarsa hesabınız bloke olmuştur hatası verecek ve başvuru yapmaları engellenecek.
 
-questNumber, quest1, quest2, quest3 = 1, "5*3 = ?", "10/2 = ?", "15-3 = ?"
-answers = {quest1: "15", quest2: "5", quest3: "12"}
+questions = [("5*3 = ?", "15"), ("10/2 = ?", "5"), ("15-3 = ?", "12")]
 name, age, phone = input("İsim, yaş ve telefon numaranızı giriniz (virgülle ayırarak): ").split(",")
-
-def quest(questNumber, quest):
-    mistake = 0
-    while mistake < 3:
-        x = input(quest + "\n")
-        if x == answers[quest]:
+for question, answer in questions:
+    for i in range(3):
+        if input(f"{question}\n") == answer: 
             print("Doğru cevap!")
-            return questNumber + 1
-        else:
-            mistake += 1
-            print("Yanlış cevap!") 
-            if mistake == 3:
-                print("Hesabınız bloke olmuştur."), quit()
-            else:
-                print(f"Kalan hakkınız: {3 - mistake}")
-
-while questNumber <= 3:
-    questNumber = quest(questNumber, eval(f"quest{questNumber}"))
-print(f"Sayın {name.capitalize()}({age}) başvuru formunuz başarıyla alınmıştır, girmiş olduğunuz telefon numarasına({phone}) en kısa zamanda tarafımızca dönüş yapılacaktır, lütfen beklemede kalınız.")
+            break 
+        if 2-i>0: print(f"Yanlış cevap girdiniz, {2-i} defa daha yanlış girerseniz başvurunuz geçersiz sayılacaktır!")
+    else: 
+        print("Çok defa yanlış girdiğinz için başvurunuz geçersizdir.")
+        quit()
+print(f"Sayın {name.capitalize()}({age}) başvuru formunuz alınmıştır, telefon numaranıza({phone}) en kısa zamanda dönüş yapılacaktır, lütfen beklemede kalınız.")
