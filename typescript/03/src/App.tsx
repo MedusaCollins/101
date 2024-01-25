@@ -2,12 +2,7 @@ import { useState } from 'react';
 import Header from './components/Header'
 import Input from './components/Input'
 import Todos from './components/Todos';
-
-type ITodo = {
-  id: number;
-  text: string;
-  completed: boolean;
-}
+import { ITodo } from './components/types';
 
 const App:React.FC = () => {
   const [dark, setDark] = useState<boolean>(true)
@@ -21,18 +16,18 @@ const App:React.FC = () => {
       text:input,
       completed: false,
     }
-    setTodos([...todos, newTodo])
+    setInput("");
+    setTodos([...todos, newTodo]);
   }
   return (
-    <div className='h-screen w-screen flex justify-center items-center'>
+    <div className={`h-screen w-screen flex justify-center mt-24 ${!dark ? 'bg-light-gray' : 'bg-dark-blue-700'}`}>
       {/* background */}
-      <div className={`${!dark ? 'bg-desktop-dark' : 'bg-desktop-light'} h-[300px] w-full bg-cover top-0 absolute -z-10`}/>
-      <div className={`${!dark ? 'bg-light-gray' : 'bg-light-blue-400'} h-full w-full absolute -z-20`}/>
+      <div className={`${!dark ? 'bg-desktop-dark' : 'bg-desktop-light'} h-[300px] w-full bg-cover top-0 absolute z-10`}/>
 
-        <div className='w-[40rem] h-[400px]'>
+        <div className='sm:w-[40rem] w-[20rem] h-[400px] mx-5 space-y-12 z-20'>
           <Header dark={dark} setDark={setDark}/>
-          <Input input={input} setInput={setInput} handleSubmit={handleSubmit}/>
-          <Todos todos={todos}/>
+          <Input dark={dark} input={input} setInput={setInput} handleSubmit={handleSubmit}/>
+          {(todos.length >= 1) && <Todos dark={dark} todos={todos} setTodos={setTodos}/>}
         </div>
     </div>
   );
