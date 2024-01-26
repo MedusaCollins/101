@@ -35,7 +35,7 @@ const Todos:React.FC<Props>= ({dark, todos, setTodos}): any => {
         break;
       }
     }
-  }, [todos])
+  }, [todos]) // eslint-disable-line
   return (
     <div className='space-y-0 shadow-md'>
     <div className={`rounded-t-md max-h-[300px] overflow-auto ${!dark ? theme.light : theme.dark}`}>
