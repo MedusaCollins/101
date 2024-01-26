@@ -75,14 +75,17 @@ const Todos:React.FC<Props>= ({dark, todos, setTodos}): any => {
       </div>
       <div className={`p-3 rounded-md flex justify-center gap-5 items-center ${!dark ? theme.light : theme.dark} text-light-blue-300`}>
         <button 
-          className={`${!dark ? 'hover:text-light-blue-400 text-dark-blue-300' : 'hover:text-dark-blue-100 text-dark-blue-300'} ${filter === "all" ? !dark ? 'text-light-blue-400' : 'text-dark-blue-100' : null}`}
+          className={`${!dark ? 'hover:text-light-blue-400 text-dark-blue-300' : 'hover:text-dark-blue-200 text-dark-blue-300'} 
+          ${filter === "all" ? !dark ? 'text-light-blue-400' : 'text-dark-blue-200' : null}`}
           onClick={() => todos.length >= 1 && (setFilter("all"), setFiltered([...todos].reverse()))}>All
         </button>
         <button 
-          className={`${!dark ? 'hover:text-light-blue-400 text-dark-blue-300' : 'hover:text-dark-blue-100 text-dark-blue-300'} ${filter === "active" ? !dark ? 'text-light-blue-400' : 'text-dark-blue-100' : null}`}
+          className={`${!dark ? 'hover:text-light-blue-400 text-dark-blue-300' : 'hover:text-dark-blue-200 text-dark-blue-300'} 
+          ${filter === "active" ? !dark ? 'text-light-blue-400' : 'text-dark-blue-200' : null}`}
           onClick={()=> todos.length >= 1 && (setFilter("active"), setFiltered(todos.filter(todo => !todo.completed).reverse()))}>Active
         </button>
-        <button className={`${!dark ? 'hover:text-light-blue-400 text-dark-blue-300' : 'hover:text-dark-blue-100 text-dark-blue-300'} ${filter === "completed" ? !dark ? 'text-light-blue-400' : 'text-dark-blue-100' : null}`}
+        <button className={`${!dark ? 'hover:text-light-blue-400 text-dark-blue-300' : 'hover:text-dark-blue-200 text-dark-blue-300'} 
+        ${filter === "completed" ? !dark ? 'text-light-blue-400' : 'text-dark-blue-200' : null}`}
           onClick={()=> todos.length >= 1 && (setFilter("completed"), setFiltered(todos.filter(todo => todo.completed).reverse()))}>Completed
         </button>
       </div>
@@ -92,19 +95,22 @@ const Todos:React.FC<Props>= ({dark, todos, setTodos}): any => {
         <p>{filtered.length} items left</p>
         <div className='space-x-2'>
           <button 
-            className={`${!dark ? 'hover:text-light-blue-400 text-dark-blue-300' : 'hover:text-dark-blue-100 text-dark-blue-300'} ${filter === "all" ? !dark ? ' text-light-blue-400' : 'text-dark-blue-100' : null}`}
+            className={`${!dark ? 'hover:text-light-blue-400 text-dark-blue-300' : 'hover:text-dark-blue-200 text-dark-blue-300'}
+             ${filter === "all" ? !dark ? ' text-light-blue-400' : 'text-dark-blue-200' : null}`}
             onClick={() => todos.length >= 1 && (setFilter("all"), setFiltered([...todos].reverse()))}>All
           </button>
           <button 
-            className={`${!dark ? 'hover:text-light-blue-400 text-dark-blue-300' : 'hover:text-dark-blue-100 text-dark-blue-300'} ${filter === "active" ? !dark ? ' text-light-blue-400' : 'text-dark-blue-100' : null}`}
+            className={`${!dark ? 'hover:text-light-blue-400 text-dark-blue-300' : 'hover:text-dark-blue-200 text-dark-blue-300'}
+             ${filter === "active" ? !dark ? ' text-light-blue-400' : 'text-dark-blue-200' : null}`}
             onClick={()=> todos.length >= 1 && (setFilter("active"), setFiltered(todos.filter(todo => !todo.completed).reverse()))}>Active
           </button>
-          <button className={`${!dark ? 'hover:text-light-blue-400 text-dark-blue-300' : 'hover:text-dark-blue-100 text-dark-blue-300'} ${filter === "completed" ? !dark ? ' text-light-blue-400' : 'text-dark-blue-100' : null}`}
+          <button className={`${!dark ? 'hover:text-light-blue-400 text-dark-blue-300' : 'hover:text-dark-blue-200 text-dark-blue-300'}
+           ${filter === "completed" ? !dark ? ' text-light-blue-400' : 'text-dark-blue-200' : null}`}
             onClick={()=> todos.length >= 1 && (setFilter("completed"), setFiltered(todos.filter(todo => todo.completed).reverse()))}>Completed
           </button>
         </div>
         <button 
-        className={`${!dark ? 'hover:text-light-blue-400 text-dark-blue-300' : 'hover:text-dark-blue-100 text-dark-blue-300'}`}
+        className={`${!dark ? 'hover:text-light-blue-400 text-dark-blue-300' : 'hover:text-dark-blue-200 text-dark-blue-300'}`}
         onClick={() => setTodos(todos.filter(todo => !todo.completed))}
         >Clear Completed</button>
       </div>
