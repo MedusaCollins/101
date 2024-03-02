@@ -11,7 +11,7 @@ import Work4 from '../assets/icons/Work4.svg'
 const Work = () => {
   return (
     <div className='mx-auto space-y-3 gap-5 flex flex-col mt-6 max-w-[995px]'>
-      <div>
+      <div className='mt-12'>
         <h3 className='text-dark'>HOME / WORKS<span className='text-light'> / CASE STUDY</span></h3>
         <h1 className='text-dark text-5xl font-semibold'>Add a great project<br/>title of your choice</h1>
       </div>

@@ -20,7 +20,7 @@ import card8 from '../assets/icons/Card8.svg'
 const Works = () => {
   return (
     <div className='flex flex-col justify-center'>
-      <div className='bg-cloud h-[200px] md:px-[200px] py-8 sm:px-2.5 space-y-3'>
+      <div className='bg-cloud h-[200px] md:px-[200px] py-8 sm:px-2.5 space-y-3 flex flex-col justify-center'>
         <h3 className='text-dark'>HOME <span className='text-light'>/ WORKS</span></h3>
         <h1 className='text-dark text-5xl font-semibold'>My Awesome Projects</h1>
       </div>
