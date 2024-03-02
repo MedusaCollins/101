@@ -14,7 +14,7 @@ const Navbar = () => {
         <div className='space-x-5'>
             <div className='sm:flex hidden'>
                 <Link to="/" className='p-2.5'><h2 className={`${location.pathname === "/" && "text-primary"}`}>Home</h2></Link>
-                <Link to="/works" className='p-2.5'><h2 className={`${location.pathname === "/works" && "text-primary"}`}>Works</h2></Link>
+                <Link to="/works" className='p-2.5'><h2 className={`${location.pathname === "/works" || location.pathname === "/work" ? "text-primary":null}`}>Works</h2></Link>
                 <Link to="/blogs" className='p-2.5'><h2 className={`${location.pathname === "/blogs" && "text-primary"}`}>Blog</h2></Link>
                 <Link to="/contact" className='p-2.5'><h2 className={`${location.pathname === "/contact" && "text-primary"}`}>Contact</h2></Link>
             </div>
