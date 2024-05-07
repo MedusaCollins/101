@@ -10,7 +10,7 @@
 
 # 26 ülkede şubesi bulunan ve her ülke için 10 farklı bayisi bulunan bir emlak şirketi var.
 # londra seçilirse kiralık mı satılık mı iş yeri mi ev mi diye soracak.
-
+import difflib
 
 real_estate_data = {
     "Usa": {
@@ -22,7 +22,7 @@ real_estate_data = {
                 ],
                 "For Sale": [
                     {"location": "Queens", "price": 500000, "sellerPhone": 33333333},
-                    {"location": "Bronx", "price": 400000, "sellerPhone": 44444444},
+                    { "location": "Bronx", "price": 400000, "sellerPhone": 44444444 },
                 ],
             },
             "Commercial": {
@@ -120,44 +120,44 @@ real_estate_data = {
         },
     },
 }
+formatHelperKeywords = [
+    "usa",
+    "germany",
+    "new york",
+    "los angeles",
+    "kiralık",
+    "satılık",
+    "iş yeri",
+    "konut",
+]
+
+
+def formatHelper(param):
+    best_match = difflib.get_close_matches(
+        param.lower(), formatHelperKeywords, n=1, cutoff=0.3
+    )
+    if best_match:
+        best_match = best_match[0]
+        return best_match.capitalize()
 
 
 try:
-    country = (
-        input("Lütfen bir ülke seçin (Örneğin: USA, Germany): ").strip().capitalize()
-    )
-    city = (
-        input("Lütfen bir şehir seçin (Örneğin: New york, Los angeles): ")
-        .strip()
-        .capitalize()
-    )
-    property_type = (
-        input("Aradığınız bina türünü seçin (Örneğin: İş yeri, Konut): ")
-        .strip()
-        .capitalize()
-    )
-    rentOrSale = input("Kiralık mı Satılık mı: ").strip().capitalize()
-    order = (
-        input(
-            "Fiyatları küçükten büyüğe (kb) mi yoksa büyükten küçüğe (bk) mi sıralamak istersiniz? "
-        )
-        .strip()
-        .lower()
-    )
+    country, city, property_type, rentOrSale, order =  formatHelper(input("Lütfen bir ülke seçin (Örneğin: USA, Germany): ")), formatHelper(input("Lütfen bir şehir seçin (Örneğin: New york, Los angeles): ")), formatHelper(input("Aradığınız bina türünü seçin (Örneğin: İş yeri, Konut): ")), formatHelper(input("Kiralık mı Satılık mı: ")), input("Fiyatları küçükten büyüğe (kb) mi yoksa büyükten küçüğe (bk) mi sıralamak istersiniz? ")
+    if None in [country, city, property_type, rentOrSale]:
+        raise ValueError("Geçersiz girişler!")
 
-    if property_type == "Konut":
+    if property_type == "konut":
         property_type = "Residential"
     else:
         property_type = "Commercial"
 
-    if rentOrSale == "Kiralık":
+    if rentOrSale == "kiralık":
         rentOrSale = "For Rent"
     else:
         rentOrSale = "For Sale"
-
     findValue = real_estate_data[country][city][property_type][rentOrSale]
 
-    if order == "kb":
+    if order.lower() == "kb":
         sorted_list = sorted(findValue, key=lambda x: x["price"])
     else:
         sorted_list = sorted(findValue, key=lambda x: x["price"], reverse=True)
