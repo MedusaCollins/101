@@ -125,12 +125,22 @@ formatHelperKeywords = [
     "germany",
     "new york",
     "los angeles",
+    "berlin",
     "kiralık",
     "satılık",
     "iş yeri",
     "konut",
 ]
-
+exchangeData = {
+    "Usa": {
+        "currency": "$",
+        "exchangeRate": 1,
+    },
+    "Germany": {
+        "currency": "€",
+        "exchangeRate":  0.93,
+    }
+}
 
 def formatHelper(param):
     best_match = difflib.get_close_matches(
@@ -140,9 +150,10 @@ def formatHelper(param):
         best_match = best_match[0]
         return best_match.capitalize()
 
-
+def calculatePrice(price, country): 
+    return f"{round(price*exchangeData[country]["exchangeRate"])}{exchangeData[country]["currency"]}"
 try:
-    country, city, property_type, rentOrSale, order =  formatHelper(input("Lütfen bir ülke seçin (Örneğin: USA, Germany): ")), formatHelper(input("Lütfen bir şehir seçin (Örneğin: New york, Los angeles): ")), formatHelper(input("Aradığınız bina türünü seçin (Örneğin: İş yeri, Konut): ")), formatHelper(input("Kiralık mı Satılık mı: ")), input("Fiyatları küçükten büyüğe (kb) mi yoksa büyükten küçüğe (bk) mi sıralamak istersiniz? ")
+    country, city, property_type, rentOrSale, order =  formatHelper(input("Lütfen bir ülke seçin (Örneğin: USA, Germany): ")), formatHelper(input("Lütfen bir şehir seçin (Örneğin: New york, Berlin): ")), formatHelper(input("Aradığınız gayrimenkul tipini seçin (Örneğin: İş yeri, Konut): ")), formatHelper(input("Kiralık mı Satılık mı: ")), input("Fiyatları küçükten büyüğe (kb) mi yoksa büyükten küçüğe (bk) mi sıralamak istersiniz? ")
     if None in [country, city, property_type, rentOrSale]:
         raise ValueError("Geçersiz girişler!")
 
@@ -156,7 +167,6 @@ try:
     else:
         rentOrSale = "For Sale"
     findValue = real_estate_data[country][city][property_type][rentOrSale]
-
     if order.lower() == "kb":
         sorted_list = sorted(findValue, key=lambda x: x["price"])
     else:
@@ -165,7 +175,7 @@ try:
     print("\n İşte seçtiğiniz kriterlere uygun bulduğum sonuçlar :) \n")
     for item in sorted_list:
         print(
-            f"Konum: {item['location']}, Fiyat: {item['price']}, Satıcının Telefon Numarası: {item['sellerPhone']}"
+            f"Konum: {item['location']}, Fiyat: {calculatePrice(item['price'], country)}, Satıcının Telefon Numarası: {item['sellerPhone']}"
         )
 
 except ValueError as ve:
