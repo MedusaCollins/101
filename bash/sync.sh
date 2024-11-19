@@ -1,53 +1,53 @@
 #!/bin/bash
 
 REPOS=(
+  "$HOME/Documents/101"
   "$HOME/Documents/birliktehareket.org"
   "$HOME/Documents/dotfiles"
   "$HOME/Documents/notes"
 )
 
-OUT_OF_SYNC_REPOS=()
+RESULTS=()
+
+TOTAL_REPOS=${#REPOS[@]}
+echo "🔍 Total $TOTAL_REPOS repositories will be checked."
+echo
 
 for REPO in "${REPOS[@]}"; do
+  echo "Checking repository: $REPO"
   if [ -d "$REPO/.git" ]; then
     cd "$REPO" || {
       echo "Cannot access $REPO"
+      RESULTS+=("❌ $REPO, cannot be accessed.")
       continue
     }
 
     git fetch >/dev/null 2>&1
 
-    LOCAL=$(git rev-parse @)
-    REMOTE=$(git rev-parse @{u})
-    BASE=$(git merge-base @ @{u})
+    LOCAL=$(git rev-parse @ 2>/dev/null)
+    REMOTE=$(git rev-parse @{u} 2>/dev/null)
+    BASE=$(git merge-base @ @{u} 2>/dev/null)
 
     STATUS=$(git status --porcelain)
 
     if [ -n "$STATUS" ]; then
-      echo "❌  $REPO has uncommitted changes."
-      OUT_OF_SYNC_REPOS+=("$REPO")
+      RESULTS+=("❌ $(basename "$REPO"), has uncommitted or untracked changes.")
     elif [ "$LOCAL" = "$REMOTE" ]; then
-      echo "✔️  $REPO is in sync with remote."
+      RESULTS+=("✔️ $(basename "$REPO"), is up-to-date with remote.")
     elif [ "$LOCAL" = "$BASE" ]; then
-      echo "❌  $REPO is out of sync: needs to pull."
-      OUT_OF_SYNC_REPOS+=("$REPO")
+      RESULTS+=("❌ $(basename "$REPO"), needs to pull changes from remote.")
     elif [ "$REMOTE" = "$BASE" ]; then
-      echo "❌  $REPO is out of sync: needs to push."
-      OUT_OF_SYNC_REPOS+=("$REPO")
+      RESULTS+=("❌ $(basename "$REPO"), needs to push changes to remote.")
     else
-      echo "❌  $REPO is diverged: needs both pull and push."
-      OUT_OF_SYNC_REPOS+=("$REPO")
+      RESULTS+=("❌ $(basename "$REPO"), is diverged: requires both pull and push.")
     fi
   else
-    echo "⚠️  $REPO is not a valid git repository."
+    RESULTS+=("⚠️ $(basename "$REPO"), is not a valid git repository.")
   fi
 done
 
-if [ ${#OUT_OF_SYNC_REPOS[@]} -eq 0 ]; then
-  echo "🎉 All repositories are in sync!"
-else
-  echo "🚨 Repositories out of sync:"
-  for REPO in "${OUT_OF_SYNC_REPOS[@]}"; do
-    echo "  - $REPO"
-  done
-fi
+echo
+echo "🚨 The following repositories have issues:"
+for RESULT in "${RESULTS[@]}"; do
+  echo "  $RESULT"
+done
