@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Kontrol edilecek local repo dizinlerini burada tanımlayın
 REPOS=(
   "$HOME/Documents/101"
   "$HOME/Documents/birliktehareket.org"
@@ -7,14 +8,18 @@ REPOS=(
   "$HOME/Documents/notes"
 )
 
+# Sync olmayan ve durumu takip edilecek repoları tutacak bir dizi
 RESULTS=()
 
+# Toplam repo sayısını yazdır
 TOTAL_REPOS=${#REPOS[@]}
 echo "🔍 Total $TOTAL_REPOS repositories will be checked."
 echo
 
+# Her repo için işlem yap
 for REPO in "${REPOS[@]}"; do
   echo "Checking repository: $REPO"
+  # Repo dizinine gidin
   if [ -d "$REPO/.git" ]; then
     cd "$REPO" || {
       echo "Cannot access $REPO"
@@ -22,8 +27,10 @@ for REPO in "${REPOS[@]}"; do
       continue
     }
 
+    # Fetch yaparak remote durumu güncelle
     git fetch >/dev/null 2>&1
 
+    # Local ve remote branch'lerin durumunu kontrol et
     LOCAL=$(git rev-parse @ 2>/dev/null)
     REMOTE=$(git rev-parse @{u} 2>/dev/null)
     BASE=$(git merge-base @ @{u} 2>/dev/null)
@@ -46,6 +53,7 @@ for REPO in "${REPOS[@]}"; do
   fi
 done
 
+# Sonuçları yazdırmadan önce bir boşluk bırak
 echo
 echo "📊 Repository Status Summary:"
 for RESULT in "${RESULTS[@]}"; do
